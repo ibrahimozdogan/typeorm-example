@@ -1,0 +1,32 @@
+version: '3'
+services:
+  mysql:
+    build:
+      context: .
+      dockerfile: ./docker/mysql/dockerfile
+    networks:
+      example_network:
+        aliases:
+          - mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=${DATABASE_NAME}
+      - MYSQL_USER=${DATABASE_USER}
+      - MYSQL_PASSWORD=${DATABASE_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${ROOT_PASSWORD}
+  example:
+    container_name: example
+    build:
+      context: .
+      dockerfile: ./docker/node/dockerfile
+    networks:
+      - example_network
+    ports:
+      - "80:3333"
+    volumes:
+      - ./:/var/example
+      - /var/example/node_modules
+networks:
+  example_network:
+    external: true

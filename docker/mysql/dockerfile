@@ -1,0 +1,5 @@
+FROM mysql:8.0.19
+
+ADD ./docker/mysql/initdb /docker-entrypoint-initdb.d/
+
+EXPOSE 3306
